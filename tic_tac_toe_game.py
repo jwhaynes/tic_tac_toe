@@ -11,15 +11,18 @@ frm = ttk.Frame(root, padding = 10)
 # provide frame with grid geometry manager
 frm.grid(sticky='nsew')
 
-# create a label widget
+# create a label widget for game title
 ttk.Label(frm, text='Tic Tac Toe').grid(column = 0, row = 0)
 
+# create a label widget for menu section
+ttk.Label(frm, text='Player Options').grid(column=1, row=1, sticky='n')
+
 # create a button widget that allows for exiting the gui
-ttk.Button(frm, text='EXIT', command = root.destroy).grid(column = 1, row = 0)
+#ttk.Button(frm, text='EXIT', command = root.destroy).grid(column = 1, row = 0)
 
 # create another frame for playing board and create grid geometry manager
 frm_play = ttk.Frame(frm, padding = 10)
-frm_play.grid(sticky='nsew')
+frm_play.grid(column = 0, row = 1, sticky='nsew')
     # make the grid rows/cols have a minimum size
 frm_play.columnconfigure([0,2,4],minsize=100)
 frm_play.rowconfigure([0,2,4],minsize=100)
