@@ -14,15 +14,26 @@ frm.grid(sticky='nsew')
 # create a label widget for game title
 ttk.Label(frm, text='Tic Tac Toe').grid(column = 0, row = 0)
 
+# create a frame for player options
+frm_player_options = ttk.Frame(frm, padding=10).grid(column=1, row=1, sticky='e')
+
 # create a label widget for menu section
-ttk.Label(frm, text='Player Options').grid(column=1, row=1, sticky='n')
+menu_selection_label = ttk.Label(frm_player_options, text='Player Options').grid(column=1, row=0, sticky='n')
+
+# create radio buttons for selecting who is x and who is o
+
+player1X_player2O_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: X\nPlayer 2: O', variable=NONE, value=NONE)
+player1O_player2X_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: O\nPlayer 2: X', variable=NONE, value=NONE)
+
+player1X_player2O_radio_button.grid(column=1, row=1)
+player1O_player2X_radio_button.grid(column=1, row=2)
 
 # create a button widget that allows for exiting the gui
 #ttk.Button(frm, text='EXIT', command = root.destroy).grid(column = 1, row = 0)
 
 # create another frame for playing board and create grid geometry manager
 frm_play = ttk.Frame(frm, padding = 10)
-frm_play.grid(column = 0, row = 1, sticky='nsew')
+frm_play.grid(column = 0, row = 1, sticky='w')
     # make the grid rows/cols have a minimum size
 frm_play.columnconfigure([0,2,4],minsize=100)
 frm_play.rowconfigure([0,2,4],minsize=100)
