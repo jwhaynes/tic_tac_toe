@@ -15,15 +15,17 @@ frm.grid(sticky='nsew')
 ttk.Label(frm, text='Tic Tac Toe').grid(column = 0, row = 0)
 
 # create a frame for player options
-frm_player_options = ttk.Frame(frm, padding=10).grid(column=1, row=1, sticky='e')
+frm_player_options = ttk.Frame(frm, padding=10).grid(column=1, row=1,)
 
 # create a label widget for menu section
-menu_selection_label = ttk.Label(frm_player_options, text='Player Options').grid(column=1, row=0, sticky='n')
+menu_selection_label = ttk.Label(frm_player_options, text='Player Options').grid(column=1, row=0)
+
+# variables and values for the player selection radio buttons (below)
+player1_selection = None
 
 # create radio buttons for selecting who is x and who is o
-
-player1X_player2O_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: X\nPlayer 2: O', variable=NONE, value=NONE)
-player1O_player2X_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: O\nPlayer 2: X', variable=NONE, value=NONE)
+player1X_player2O_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: X\nPlayer 2: O', variable=player1_selection, value='X')
+player1O_player2X_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: O\nPlayer 2: X', variable=player1_selection, value='O')
 
 player1X_player2O_radio_button.grid(column=1, row=1)
 player1O_player2X_radio_button.grid(column=1, row=2)
