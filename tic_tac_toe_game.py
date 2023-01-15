@@ -6,7 +6,10 @@ from tkinter import ttk
 root = Tk()
 
 # instantiate a top window frame
-frm = ttk.Frame(root, padding = 10)
+s_top = ttk.Style()
+s_top.configure('top.TFrame',background='blue')
+
+frm = ttk.Frame(root, padding = 10, style='top.TFrame')
 
 # provide frame with grid geometry manager
 frm.grid(sticky='nsew')
@@ -15,7 +18,10 @@ frm.grid(sticky='nsew')
 ttk.Label(frm, text='Tic Tac Toe').grid(column = 0, row = 0)
 
 # create a frame for player options
-frm_player_options = ttk.Frame(frm, padding=10).grid(column=1, row=1,)
+s_options = ttk.Style()
+s_options.configure('option.TFrame',background='red',relief='sunken')
+frm_player_options = ttk.Frame(frm, padding=10, style='option.TFrame')
+frm_player_options.grid(column=1, row=1, sticky='e')
 
 # create a label widget for menu section
 menu_selection_label = ttk.Label(frm_player_options, text='Player Options').grid(column=1, row=0)
@@ -34,11 +40,13 @@ player1O_player2X_radio_button.grid(column=1, row=2)
 #ttk.Button(frm, text='EXIT', command = root.destroy).grid(column = 1, row = 0)
 
 # create another frame for playing board and create grid geometry manager
-frm_play = ttk.Frame(frm, padding = 10)
+s_play = ttk.Style()
+s_play.configure('play.TFrame',background='purple')
+frm_play = ttk.Frame(frm, padding = 10, style='play.TFrame')
 frm_play.grid(column = 0, row = 1, sticky='w')
     # make the grid rows/cols have a minimum size
-frm_play.columnconfigure([0,2,4],minsize=100)
-frm_play.rowconfigure([0,2,4],minsize=100)
+frm_play.columnconfigure([0,2,4],minsize=100, weight=1)
+frm_play.rowconfigure([0,2,4],minsize=100, weight=1)
 
 # create labels and separators for the playing board
 button_1 = ttk.Button(frm_play, text = 'Tic\nTac\nToe').grid(column=0,row=4)
