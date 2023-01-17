@@ -36,6 +36,14 @@ player1O_player2X_radio_button = ttk.Radiobutton(frm_player_options, text='Playe
 player1X_player2O_radio_button.grid(column=1, row=1)
 player1O_player2X_radio_button.grid(column=1, row=2)
 
+# create a start button to begin a game
+start_button = ttk.Button(frm_player_options, text='START')
+start_button.grid(column=1,row=3)
+
+# create a reset button to reset board
+reset_button = ttk.Button(frm_player_options, text='RESET BOARD')
+reset_button.grid(column=1, row=4)
+
 # create a button widget that allows for exiting the gui
 #ttk.Button(frm, text='EXIT', command = root.destroy).grid(column = 1, row = 0)
 
