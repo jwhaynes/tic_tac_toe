@@ -1,9 +1,15 @@
 #tic tac toe gameplay
 
 class Player():
-    pass
+    def __init__(self, order):
+        self.order = order
+        self.plays = []
 
 class Game():
+    def __init__(self):
+        self.winner = None
+        self.p1 = Player(1)
+        self.p2 = Player(2)
     
     solutions = [
         [1,2,3],
@@ -17,4 +23,12 @@ class Game():
     ]
 
     def check_for_win(self):
-        pass
+        for solution in Game.solutions:
+            if solution in self.p1.plays:
+                self.winner = self.p1
+            elif solution in self.p2.plays:
+                self.winner = self.p2
+    
+    def play_game(self):
+        while self.winner == None:
+            pass
