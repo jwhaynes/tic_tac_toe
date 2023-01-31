@@ -6,6 +6,9 @@ class Player():
         self.order = order
         self.plays = []
 
+    def __repr__(self) -> str:
+        return 'Player {}'.format(self.order)
+
 # game class holds game specific variables and functions for playing and checking game status
 class Game():
     def __init__(self):
@@ -45,24 +48,33 @@ class Game():
         # if all possible plays are made and no winner, winner is CAT
         if total_plays == 9 and self.winner == None:
             self.winner = 'CAT'
+    
+    
+    def play_process(self,player):
+        play = None
+        while play not in self.play_options:
+            print('Please make a valid choice from the following: {choices}'.format(choices = self.play_options))
+            play = int(input('Select move: '))
+        player.plays.append(play)
+        self.play_options.remove(play)
+        self.check_for_win()
 
     def make_play(self):
         # determine if p1 turn or p2 turn
         if len(self.p1.plays) == len(self.p2.plays):
-            ####### NEED TO CHECK IF PLAY IS AVAIALABLE AND THEN REMOVE IT FROM AVAILABLE PLAYS AFTER SELECTED!!! #########
-            p1_play = int(input('Select move p1: '))
-            self.p1.plays.append(p1_play)
-            self.check_for_win()
+            print('Player 1 turn!')
+            self.play_process(self.p1)
         else:
-            p2_play = int(input('select move p2: '))
-            self.p2.plays.append(p2_play)
-            self.check_for_win()
-    
+            print('Player 2 turn!')
+            self.play_process(self.p2)
+            
+
+
     def play_game(self):
         while self.winner == None:
             self.make_play()
-            print('Player 1 plays: {plays}'.format(moves=self.p1.plays))
-            print('Player 2 plays: {plays}'.format(moves=self.p2.plays))
+            print('Player 1 plays: {plays}'.format(plays=self.p1.plays))
+            print('Player 2 plays: {plays}'.format(plays=self.p2.plays))
         print('Winner: {winner}'.format(winner=self.winner))
 
 game = Game()
