@@ -77,5 +77,5 @@ class Game():
             print('Player 2 plays: {plays}'.format(plays=self.p2.plays))
         print('Winner: {winner}'.format(winner=self.winner))
 
-game = Game()
-game.play_game()
+#game = Game()
+#game.play_game()
