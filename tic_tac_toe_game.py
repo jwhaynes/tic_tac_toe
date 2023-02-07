@@ -1,6 +1,7 @@
 # import tkinter tools
 from tkinter import *
 from tkinter import ttk
+from tic_tac_toe_classes import Player, Game
 
 # instantiate the gui
 root = Tk()
@@ -24,7 +25,7 @@ frm_player_options = ttk.Frame(frm, padding=10, style='option.TFrame')
 frm_player_options.grid(column=1, row=1, sticky='e')
 
 # create a label widget for menu section
-menu_selection_label = ttk.Label(frm_player_options, text='Player Options').grid(column=1, row=0)
+menu_selection_label = ttk.Label(frm_player_options, text='Player Options').grid(column=1, row=0, pady=5)
 
 # variables and values for the player selection radio buttons (below)
 player1_selection = None
@@ -37,12 +38,16 @@ player1X_player2O_radio_button.grid(column=1, row=1)
 player1O_player2X_radio_button.grid(column=1, row=2)
 
 # create a start button to begin a game
-start_button = ttk.Button(frm_player_options, text='START')
-start_button.grid(column=1,row=3)
+start_button = ttk.Button(frm_player_options, text='START', command=Game())
+start_button.grid(column=1,row=3,pady=5)
 
 # create a reset button to reset board
 reset_button = ttk.Button(frm_player_options, text='RESET BOARD')
-reset_button.grid(column=1, row=4)
+reset_button.grid(column=1, row=4, pady=5)
+
+# create a label that displays whose turn it is
+turn_indication_button = ttk.Label(frm_player_options, text='Player turn: ')
+turn_indication_button.grid(column=1,row=5,pady=5)
 
 # create a button widget that allows for exiting the gui
 #ttk.Button(frm, text='EXIT', command = root.destroy).grid(column = 1, row = 0)
