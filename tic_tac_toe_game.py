@@ -1,58 +1,100 @@
-# import tkinter tools
+## import tkinter tools and custom classes
 from tkinter import *
 from tkinter import ttk
-from tic_tac_toe_classes import Player, Game
+from tic_tac_toe_classes import Player, Game, tictactoe_button
 
-# instantiate the gui
-root = Tk()
+root = Tk() # instantiate the gui
 
-# instantiate a top window frame
+# the following should change name on title bar?
+#root.title = "Tic Tac Toe"
+
+## instantiate a top window frame
 s_top = ttk.Style()
 s_top.configure('top.TFrame',background='blue')
 
 frm = ttk.Frame(root, padding = 10, style='top.TFrame')
 
-# provide frame with grid geometry manager
+## provide frame with grid geometry manager
 frm.grid(sticky='nsew')
 
-# create a label widget for game title
-ttk.Label(frm, text='Tic Tac Toe').grid(column = 0, row = 0)
+## create a label widget for game title
+title_label = ttk.Label(frm, text='Tic Tac Toe')
+title_label.grid(column = 0, row = 0)
 
-# create a frame for player options
+## create a frame for player options
 s_options = ttk.Style()
 s_options.configure('option.TFrame',background='red',relief='sunken')
 frm_player_options = ttk.Frame(frm, padding=10, style='option.TFrame')
 frm_player_options.grid(column=1, row=1, sticky='e')
 
-# create a label widget for menu section
-menu_selection_label = ttk.Label(frm_player_options, text='Player Options').grid(column=1, row=0, pady=5)
+## create a label widget for menu section
+menu_selection_label = ttk.Label(frm_player_options, text='Player Options')
+menu_selection_label.grid(column=1, row=0, pady=5)
 
-# variables and values for the player selection radio buttons (below)
+# methods, variables and values for the player selection radio buttons (below)
 player1_selection = None
 
-# create radio buttons for selecting who is x and who is o
+def reset_board():
+    # function for reset button
+    pass
+
+def button_update():
+    pass
+
+def begin_board_game():
+    game = Game(player1_selection)
+    for button in buttons:
+        button.initialize_button(game)
+        #button.configure(text='\n\n\n', state='!disabled')
+        #button.configure(command = lambda : button.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
+    # button_1.configure(text='\n\n\n', state='!disabled', command= lambda : button_1.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
+    # button_2.configure(text='\n\n\n', state='!disabled', command= lambda : button_2.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
+    # button_3.configure(text='\n\n\n', state='!disabled', command= lambda : button_3.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
+    # button_4.configure(text='\n\n\n', state='!disabled', command= lambda : button_4.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
+    # button_5.configure(text='\n\n\n', state='!disabled', command= lambda : button_5.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
+    # button_6.configure(text='\n\n\n', state='!disabled', command= lambda : button_6.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
+    # button_7.configure(text='\n\n\n', state='!disabled', command= lambda : button_7.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
+    #button_8.configure(text='\n\n\n', state='!disabled', command= lambda : button_8.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
+    #button_9.configure(text='\n\n\n', state='!disabled', command= lambda : button_9.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
+    player1X_player2O_radio_button.state(['disabled'])
+    player1O_player2X_radio_button.state(['disabled'])
+    start_button.state(['disabled'])
+    turn_indication_button.configure(text='Player turn: Player 1')
+    #while game.winner == None:
+        ###
+        # solicit input (button click on board box)
+        # change clicked box so it has correct symbol
+
+        # check for win
+    #    game.check_for_win
+        ###
+    #    game.make_play()
+    #    turn_indication_button.configure(text='Player turn: {player_turn}'.format(player_turn = game.last_symbol_played))
+
+
+## create radio buttons for selecting who is x and who is o
 player1X_player2O_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: X\nPlayer 2: O', variable=player1_selection, value='X')
 player1O_player2X_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: O\nPlayer 2: X', variable=player1_selection, value='O')
 
 player1X_player2O_radio_button.grid(column=1, row=1)
 player1O_player2X_radio_button.grid(column=1, row=2)
 
-# create a start button to begin a game
-start_button = ttk.Button(frm_player_options, text='START', command=Game())
+## create a start button to begin a game
+start_button = ttk.Button(frm_player_options, text='START', command=begin_board_game)
 start_button.grid(column=1,row=3,pady=5)
 
-# create a reset button to reset board
-reset_button = ttk.Button(frm_player_options, text='RESET BOARD')
+## create a reset button to reset board
+reset_button = ttk.Button(frm_player_options, text='RESET BOARD', state = 'disabled')
 reset_button.grid(column=1, row=4, pady=5)
 
-# create a label that displays whose turn it is
+## create a label that displays whose turn it is
 turn_indication_button = ttk.Label(frm_player_options, text='Player turn: ')
 turn_indication_button.grid(column=1,row=5,pady=5)
 
 # create a button widget that allows for exiting the gui
 #ttk.Button(frm, text='EXIT', command = root.destroy).grid(column = 1, row = 0)
 
-# create another frame for playing board and create grid geometry manager
+## create another frame for playing board and create grid geometry manager
 s_play = ttk.Style()
 s_play.configure('play.TFrame',background='purple')
 frm_play = ttk.Frame(frm, padding = 10, style='play.TFrame')
@@ -61,21 +103,33 @@ frm_play.grid(column = 0, row = 1, sticky='w')
 frm_play.columnconfigure([0,2,4],minsize=100, weight=1)
 frm_play.rowconfigure([0,2,4],minsize=100, weight=1)
 
-# create labels and separators for the playing board
-button_1 = ttk.Button(frm_play, text = 'Tic\nTac\nToe').grid(column=0,row=4)
-button_2 = ttk.Button(frm_play, text = 'Tic\nTac\nToe').grid(column=2,row=4)
-button_3 = ttk.Button(frm_play, text = 'Tic\nTac\nToe').grid(column=4,row=4)
-lower_horizontal_separator = ttk.Separator(frm_play, orient=HORIZONTAL).grid(column=0, columnspan=5, row=3, sticky='ew')
-button_4 = ttk.Button(frm_play, text = 'Tic\nTac\nToe').grid(column=0,row=2)
-button_5 = ttk.Button(frm_play, text = 'Tic\nTac\nToe').grid(column=2,row=2)
-button_6 = ttk.Button(frm_play, text = 'Tic\nTac\nToe').grid(column=4,row=2)
-upper_horizontal_separator = ttk.Separator(frm_play, orient=HORIZONTAL).grid(column=0,row=1,columnspan=5,sticky='ew')
-button_7 = ttk.Button(frm_play, text = 'Tic\nTac\nToe').grid(column=0,row=0)
-button_8 = ttk.Button(frm_play, text = 'Tic\nTac\nToe').grid(column=2,row=0)
-button_9 = ttk.Button(frm_play, text = 'Tic\nTac\nToe').grid(column=4,row=0)
+## create labels and separators for the playing board
+button_names = ['button_' + str(num) for num in range(1,10)] # list of names used for board buttons
+buttons = [] # list that will hold button objects
+all_vars = vars() # handle for global variables dictionary
+rows = (4,2,0) # rows in grid that buttons will be put
+cols = (0,2,4) # columns in grid that buttons will be put
+combos = [] # list to hold tuples of column, row combinations
+for row in rows: # nested loop to create col,row combos
+    for col in cols:
+        combos.append((col,row))
 
-vertical_left_separator = ttk.Separator(frm_play,orient=VERTICAL).grid(column=1, row=0, rowspan=5,sticky='ns')
-vertical_right_separator = ttk.Separator(frm_play,orient=VERTICAL).grid(column=3, row=0, rowspan=5, sticky='ns')
+for name in button_names: # loop to create button, add button to button list, place button in grid 
+    all_vars[name] = tictactoe_button(frm_play, text = 'Tic\nTac\nToe', state = 'disabled')
+    buttons.append(all_vars[name])
+    num = len(buttons) - 1
+    all_vars[name].grid(column=combos[num][0],row=combos[num][1])
 
-# instantiate the event loop
+## create separators for the playing board and place them
+lower_horizontal_separator = ttk.Separator(frm_play, orient=HORIZONTAL)
+upper_horizontal_separator = ttk.Separator(frm_play, orient=HORIZONTAL)
+vertical_left_separator = ttk.Separator(frm_play,orient=VERTICAL)
+vertical_right_separator = ttk.Separator(frm_play,orient=VERTICAL)
+
+lower_horizontal_separator.grid(column=0, columnspan=5, row=3, sticky='ew')
+upper_horizontal_separator.grid(column=0,row=1,columnspan=5,sticky='ew')
+vertical_left_separator.grid(column=1, row=0, rowspan=5,sticky='ns')
+vertical_right_separator.grid(column=3, row=0, rowspan=5, sticky='ns')
+
+## instantiate the event loop
 root.mainloop()
