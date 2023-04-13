@@ -1,21 +1,29 @@
+from tkinter import *
+from tkinter import ttk
+
 #tic tac toe gameplay
 
 # player class holds information on players in a given game, instantiated in the game class
 class Player():
-    def __init__(self, order):
+    def __init__(self, order, symbol):
         self.order = order
         self.plays = []
+        self.symbol = symbol
 
     def __repr__(self) -> str:
         return 'Player {}'.format(self.order)
 
 # game class holds game specific variables and functions for playing and checking game status
 class Game():
-    def __init__(self):
+    def __init__(self,p1_symbol):
         self.winner = None
-        self.p1 = Player(1)
-        self.p2 = Player(2)
+        self.p1 = Player(1, p1_symbol)
+        if p1_symbol == 'X':
+            self.p2 = Player(2, 'Y')
+        else:
+            self.p2 = Player(2, 'X')
         self.play_options = [num for num in range(1,10)]
+        self.last_symbol_played = 'X'
     
     # solutions is a list of sets of the possible solutions in a game of tic tac toe, used for reference in check for win function
     solutions = [
@@ -62,20 +70,28 @@ class Game():
     def make_play(self):
         # determine if p1 turn or p2 turn
         if len(self.p1.plays) == len(self.p2.plays):
-            print('Player 1 turn!')
+            self.player_turn = 1
             self.play_process(self.p1)
         else:
-            print('Player 2 turn!')
+            self.player_turn = 2
             self.play_process(self.p2)
             
+# special board button for tkinter
+class tictactoe_button(ttk.Button):
+    
+    def initialize_button(self, game):
+        self.configure(text='\n\n\n', state='!disabled')
+        self.configure(command = lambda : self.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
 
 
-    def play_game(self):
-        while self.winner == None:
-            self.make_play()
-            print('Player 1 plays: {plays}'.format(plays=self.p1.plays))
-            print('Player 2 plays: {plays}'.format(plays=self.p2.plays))
-        print('Winner: {winner}'.format(winner=self.winner))
 
+####
+#    def play_game(self):
+#        while self.winner == None:
+#            self.make_play()
+#            #print('Player 1 plays: {plays}'.format(plays=self.p1.plays))
+#            #print('Player 2 plays: {plays}'.format(plays=self.p2.plays))
+#        print('Winner: {winner}'.format(winner=self.winner))
+###
 #game = Game()
 #game.play_game()
