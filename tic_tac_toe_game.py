@@ -38,41 +38,20 @@ def reset_board():
     # function for reset button
     pass
 
-def button_update():
-    pass
-
 def begin_board_game():
-    game = Game(player1_selection)
+    game = Game(player1_selection.get())
     for button in buttons:
         button.initialize_button(game)
-        #button.configure(text='\n\n\n', state='!disabled')
-        #button.configure(command = lambda : button.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
-    # button_1.configure(text='\n\n\n', state='!disabled', command= lambda : button_1.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
-    # button_2.configure(text='\n\n\n', state='!disabled', command= lambda : button_2.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
-    # button_3.configure(text='\n\n\n', state='!disabled', command= lambda : button_3.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
-    # button_4.configure(text='\n\n\n', state='!disabled', command= lambda : button_4.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
-    # button_5.configure(text='\n\n\n', state='!disabled', command= lambda : button_5.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
-    # button_6.configure(text='\n\n\n', state='!disabled', command= lambda : button_6.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
-    # button_7.configure(text='\n\n\n', state='!disabled', command= lambda : button_7.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
-    #button_8.configure(text='\n\n\n', state='!disabled', command= lambda : button_8.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
-    #button_9.configure(text='\n\n\n', state='!disabled', command= lambda : button_9.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
+
     player1X_player2O_radio_button.state(['disabled'])
     player1O_player2X_radio_button.state(['disabled'])
     start_button.state(['disabled'])
-    turn_indication_button.configure(text='Player turn: Player 1')
-    #while game.winner == None:
-        ###
-        # solicit input (button click on board box)
-        # change clicked box so it has correct symbol
-
-        # check for win
-    #    game.check_for_win
-        ###
-    #    game.make_play()
-    #    turn_indication_button.configure(text='Player turn: {player_turn}'.format(player_turn = game.last_symbol_played))
+    turn_indication_button.configure(text='Player turn: Player {num}'.format(num=game.next_player_turn))
+        
 
 
-## create radio buttons for selecting who is x and who is o
+## create radio buttons for selecting who is x and who is o and define associated variable
+player1_selection = StringVar()
 player1X_player2O_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: X\nPlayer 2: O', variable=player1_selection, value='X')
 player1O_player2X_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: O\nPlayer 2: X', variable=player1_selection, value='O')
 
@@ -114,11 +93,13 @@ for row in rows: # nested loop to create col,row combos
     for col in cols:
         combos.append((col,row))
 
-for name in button_names: # loop to create button, add button to button list, place button in grid 
+for name in button_names: # loop to create button, add button to button list, place button in grid, give button id property
     all_vars[name] = tictactoe_button(frm_play, text = 'Tic\nTac\nToe', state = 'disabled')
     buttons.append(all_vars[name])
     num = len(buttons) - 1
     all_vars[name].grid(column=combos[num][0],row=combos[num][1])
+    all_vars[name].id = int(name[-1])
+    
 
 ## create separators for the playing board and place them
 lower_horizontal_separator = ttk.Separator(frm_play, orient=HORIZONTAL)
