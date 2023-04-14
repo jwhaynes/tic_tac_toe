@@ -19,11 +19,13 @@ class Game():
         self.winner = None
         self.p1 = Player(1, p1_symbol)
         if p1_symbol == 'X':
-            self.p2 = Player(2, 'Y')
+            self.p2 = Player(2, 'O')
         else:
             self.p2 = Player(2, 'X')
         self.play_options = [num for num in range(1,10)]
-        self.last_symbol_played = 'X'
+        self.next_player_turn = 1
+        print(self.p1.symbol,self.p2.symbol)
+        
     
     # solutions is a list of sets of the possible solutions in a game of tic tac toe, used for reference in check for win function
     solutions = [
@@ -70,18 +72,31 @@ class Game():
     def make_play(self):
         # determine if p1 turn or p2 turn
         if len(self.p1.plays) == len(self.p2.plays):
-            self.player_turn = 1
+            self.next_player_turn = 2
             self.play_process(self.p1)
         else:
-            self.player_turn = 2
+            self.player_turn = 1
             self.play_process(self.p2)
-            
+
 # special board button for tkinter
 class tictactoe_button(ttk.Button):
     
     def initialize_button(self, game):
         self.configure(text='\n\n\n', state='!disabled')
-        self.configure(command = lambda : self.configure(text='\n{symbol}\n\n'.format(symbol=game.last_symbol_played), state='disabled'))
+        self.configure(command = lambda : self.button_press(game))
+
+    def button_press(self,game):
+        
+        if game.next_player_turn == 1:
+            self.configure(text='\n{symbol}\n\n'.format(symbol=game.p1.symbol), state='disabled')
+            game.p1.plays.append(self.id)
+            game.next_player_turn = 2
+        else:
+            self.configure(text='\n{symbol}\n\n'.format(symbol=game.p2.symbol), state='disabled')
+            game.p2.plays.append(self.id)
+            game.next_player_turn = 1
+        
+        game.check_for_win()
 
 
 
