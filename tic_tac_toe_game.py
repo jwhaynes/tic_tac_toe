@@ -1,7 +1,35 @@
 ## import tkinter tools and custom classes
 from tkinter import *
 from tkinter import ttk
-from tic_tac_toe_classes import Player, Game, tictactoe_button
+from tic_tac_toe_classes import Player, Game
+
+# special board button for tkinter
+class tictactoe_button(ttk.Button):
+    
+    def initialize_button(self, game):
+        self.configure(text='\n\n\n', state='!disabled')
+        self.configure(command = lambda : self.button_press(game))
+
+    def button_press(self,game):
+        
+        if game.next_player_turn == 1:
+            self.configure(text='\n{symbol}\n\n'.format(symbol=game.p1.symbol), state='disabled')
+            game.p1.plays.append(self.id)
+            game.play_options.remove(self.id)
+            game.next_player_turn = 2
+        else:
+            self.configure(text='\n{symbol}\n\n'.format(symbol=game.p2.symbol), state='disabled')
+            game.p2.plays.append(self.id)
+            game.play_options.remove(self.id)
+            game.next_player_turn = 1
+        
+        game.check_for_win()
+        if (game.winner != None) and (game.winner == 'CAT'):
+            buttons_off(game, buttons)
+        elif (game.winner != None):
+            buttons_off(game, buttons)
+
+
 
 root = Tk() # instantiate the gui
 
@@ -34,9 +62,13 @@ menu_selection_label.grid(column=1, row=0, pady=5)
 # methods, variables and values for the player selection radio buttons (below)
 player1_selection = None
 
-def reset_board():
+def reset_all():
     # function for reset button
-    pass
+    reset_board(buttons)
+    start_button.state(['!disabled'])
+    player1X_player2O_radio_button.state(['!disabled'])
+    player1O_player2X_radio_button.state(['!disabled'])
+    turn_indication_label.configure(text='Player turn: ')
 
 def begin_board_game():
     game = Game(player1_selection.get())
@@ -46,7 +78,8 @@ def begin_board_game():
     player1X_player2O_radio_button.state(['disabled'])
     player1O_player2X_radio_button.state(['disabled'])
     start_button.state(['disabled'])
-    turn_indication_button.configure(text='Player turn: Player {num}'.format(num=game.next_player_turn))
+    turn_indication_label.configure(text='Player turn: Player {num}'.format(num=game.next_player_turn))
+    reset_button.state(['!disabled'])
         
 
 
@@ -63,12 +96,12 @@ start_button = ttk.Button(frm_player_options, text='START', command=begin_board_
 start_button.grid(column=1,row=3,pady=5)
 
 ## create a reset button to reset board
-reset_button = ttk.Button(frm_player_options, text='RESET BOARD', state = 'disabled')
+reset_button = ttk.Button(frm_player_options, text='RESET BOARD', state = 'disabled', command=reset_all)
 reset_button.grid(column=1, row=4, pady=5)
 
 ## create a label that displays whose turn it is
-turn_indication_button = ttk.Label(frm_player_options, text='Player turn: ')
-turn_indication_button.grid(column=1,row=5,pady=5)
+turn_indication_label = ttk.Label(frm_player_options, text='Player turn: ')
+turn_indication_label.grid(column=1,row=5,pady=5)
 
 # create a button widget that allows for exiting the gui
 #ttk.Button(frm, text='EXIT', command = root.destroy).grid(column = 1, row = 0)
@@ -99,7 +132,14 @@ for name in button_names: # loop to create button, add button to button list, pl
     num = len(buttons) - 1
     all_vars[name].grid(column=combos[num][0],row=combos[num][1])
     all_vars[name].id = int(name[-1])
-    
+
+def buttons_off(game, buttons):
+    for button in buttons:
+            button.configure(state = 'disabled')
+
+def reset_board(buttons):
+    for button in buttons:
+        button.configure(text = 'Tic\nTac\nToe', state = 'disabled')
 
 ## create separators for the playing board and place them
 lower_horizontal_separator = ttk.Separator(frm_play, orient=HORIZONTAL)
