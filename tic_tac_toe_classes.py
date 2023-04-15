@@ -24,7 +24,7 @@ class Game():
             self.p2 = Player(2, 'X')
         self.play_options = [num for num in range(1,10)]
         self.next_player_turn = 1
-        print(self.p1.symbol,self.p2.symbol)
+        
         
     
     # solutions is a list of sets of the possible solutions in a game of tic tac toe, used for reference in check for win function
@@ -60,43 +60,23 @@ class Game():
             self.winner = 'CAT'
     
     
-    def play_process(self,player):
-        play = None
-        while play not in self.play_options:
-            print('Please make a valid choice from the following: {choices}'.format(choices = self.play_options))
-            play = int(input('Select move: '))
-        player.plays.append(play)
-        self.play_options.remove(play)
-        self.check_for_win()
+    #def play_process(self,player):
+        #play = None
+        #while play not in self.play_options:
+            #print('Please make a valid choice from the following: {choices}'.format(choices = self.play_options))
+            #play = int(input('Select move: '))
+        #player.plays.append(play)
+        #self.play_options.remove(play)
+        #self.check_for_win()
 
-    def make_play(self):
+    #def make_play(self):
         # determine if p1 turn or p2 turn
-        if len(self.p1.plays) == len(self.p2.plays):
-            self.next_player_turn = 2
-            self.play_process(self.p1)
-        else:
-            self.player_turn = 1
-            self.play_process(self.p2)
-
-# special board button for tkinter
-class tictactoe_button(ttk.Button):
-    
-    def initialize_button(self, game):
-        self.configure(text='\n\n\n', state='!disabled')
-        self.configure(command = lambda : self.button_press(game))
-
-    def button_press(self,game):
-        
-        if game.next_player_turn == 1:
-            self.configure(text='\n{symbol}\n\n'.format(symbol=game.p1.symbol), state='disabled')
-            game.p1.plays.append(self.id)
-            game.next_player_turn = 2
-        else:
-            self.configure(text='\n{symbol}\n\n'.format(symbol=game.p2.symbol), state='disabled')
-            game.p2.plays.append(self.id)
-            game.next_player_turn = 1
-        
-        game.check_for_win()
+        #if len(self.p1.plays) == len(self.p2.plays):
+            #self.next_player_turn = 2
+            #self.play_process(self.p1)
+        #else:
+            #self.player_turn = 1
+            #self.play_process(self.p2)
 
 
 
