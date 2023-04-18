@@ -24,6 +24,7 @@ class Game():
             self.p2 = Player(2, 'X')
         self.play_options = [num for num in range(1,10)]
         self.next_player_turn = 1
+        self.computer_player = None
         
         
     
