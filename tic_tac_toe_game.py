@@ -1,46 +1,54 @@
 ## import tkinter tools and custom classes
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from tic_tac_toe_classes import Player, Game
 
-# special board button for tkinter
+# special board button class for tkinter
 class tictactoe_button(ttk.Button):
     
     def initialize_button(self, game):
+        # sets up initial button state/props
         self.configure(text='\n\n\n', state='!disabled')
         self.configure(command = lambda : self.button_press(game))
 
     def button_press(self,game):
+        # function determines game flow following each play on the board (play initiated by button press)
         
         if game.next_player_turn == 1:
-            self.configure(text='\n{symbol}\n\n'.format(symbol=game.p1.symbol), state='disabled')
-            game.p1.plays.append(self.id)
-            game.play_options.remove(self.id)
-            game.next_player_turn = 2
+            self.configure(text='\n{symbol}\n\n'.format(symbol=game.p1.symbol), state='disabled') # place player1 symbol
+            game.p1.plays.append(self.id) # add moves to list of player1 plays
+            game.play_options.remove(self.id) # removes button as a possible play option
+            game.next_player_turn = 2 # changes next_player prop of game object to player2
         else:
-            self.configure(text='\n{symbol}\n\n'.format(symbol=game.p2.symbol), state='disabled')
-            game.p2.plays.append(self.id)
-            game.play_options.remove(self.id)
-            game.next_player_turn = 1
+            self.configure(text='\n{symbol}\n\n'.format(symbol=game.p2.symbol), state='disabled') # place player2 symbol
+            game.p2.plays.append(self.id) # add moves to list of player2 plays
+            game.play_options.remove(self.id) # removes button as a possible play option
+            game.next_player_turn = 1 # changes next_player prop of game object to player1
         
-        game.check_for_win()
+        game.check_for_win() # method defined in tic_tac_toe_classes.py
+        # flow control for tie or when a player wins
         if (game.winner != None) and (game.winner == 'CAT'):
             buttons_off(game, buttons)
+            messagebox.showinfo(message = 'CAT! It\'s a tie!') # window pops up to show tie
         elif (game.winner != None):
             buttons_off(game, buttons)
+            messagebox.showinfo(message = '{winner} has won the game!'.format(winner = game.winner)) # window pops up to show winner
+        
+        if (game.winner == None):
+            # indicate it's the next player's turn
+            turn_indication_label.configure(text='Player turn: Player {num}'.format(num=game.next_player_turn))
 
+# instantiate the gui
+root = Tk() 
 
-
-root = Tk() # instantiate the gui
-
-# the following should change name on title bar?
-#root.title = "Tic Tac Toe"
+# puts title on application
+root.title("Tic Tac Toe")
 
 ## instantiate a top window frame
-s_top = ttk.Style()
-s_top.configure('top.TFrame',background='blue')
+#s_top = ttk.Style() this style is for development purposes
+#s_top.configure('top.TFrame',background='blue') this style is for devlopment purposes
 
-frm = ttk.Frame(root, padding = 10, style='top.TFrame')
+frm = ttk.Frame(root, padding = 10)
 
 ## provide frame with grid geometry manager
 frm.grid(sticky='nsew')
@@ -50,9 +58,9 @@ title_label = ttk.Label(frm, text='Tic Tac Toe')
 title_label.grid(column = 0, row = 0)
 
 ## create a frame for player options
-s_options = ttk.Style()
-s_options.configure('option.TFrame',background='red',relief='sunken')
-frm_player_options = ttk.Frame(frm, padding=10, style='option.TFrame')
+#s_options = ttk.Style() this style is for development purposes
+#s_options.configure('option.TFrame',background='red',relief='sunken') this style is for development purposes
+frm_player_options = ttk.Frame(frm, padding=10)
 frm_player_options.grid(column=1, row=1, sticky='e')
 
 ## create a label widget for menu section
@@ -63,7 +71,7 @@ menu_selection_label.grid(column=1, row=0, pady=5)
 player1_selection = None
 
 def reset_all():
-    # function for reset button
+    # function for reset button: reverts application to initial state
     reset_board(buttons)
     start_button.state(['!disabled'])
     player1X_player2O_radio_button.state(['!disabled'])
@@ -71,6 +79,7 @@ def reset_all():
     turn_indication_label.configure(text='Player turn: ')
 
 def begin_board_game():
+    # function to change application to start a game
     game = Game(player1_selection.get())
     for button in buttons:
         button.initialize_button(game)
@@ -83,8 +92,8 @@ def begin_board_game():
         
 
 
-## create radio buttons for selecting who is x and who is o and define associated variable
-player1_selection = StringVar()
+## create radio buttons for selecting who is x and who is o and define associated selection variable variable
+player1_selection = StringVar() # define variable so radio button selection value can be accessed
 player1X_player2O_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: X\nPlayer 2: O', variable=player1_selection, value='X')
 player1O_player2X_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: O\nPlayer 2: X', variable=player1_selection, value='O')
 
@@ -100,16 +109,16 @@ reset_button = ttk.Button(frm_player_options, text='RESET BOARD', state = 'disab
 reset_button.grid(column=1, row=4, pady=5)
 
 ## create a label that displays whose turn it is
-turn_indication_label = ttk.Label(frm_player_options, text='Player turn: ')
+turn_indication_label = ttk.Label(frm_player_options, text='Player turn: ', width=18)
 turn_indication_label.grid(column=1,row=5,pady=5)
 
 # create a button widget that allows for exiting the gui
 #ttk.Button(frm, text='EXIT', command = root.destroy).grid(column = 1, row = 0)
 
 ## create another frame for playing board and create grid geometry manager
-s_play = ttk.Style()
-s_play.configure('play.TFrame',background='purple')
-frm_play = ttk.Frame(frm, padding = 10, style='play.TFrame')
+#s_play = ttk.Style() this style is for development purposes
+#s_play.configure('play.TFrame',background='purple') this style is for development purposes
+frm_play = ttk.Frame(frm, padding = 10)
 frm_play.grid(column = 0, row = 1, sticky='w')
     # make the grid rows/cols have a minimum size
 frm_play.columnconfigure([0,2,4],minsize=100, weight=1)
@@ -134,10 +143,12 @@ for name in button_names: # loop to create button, add button to button list, pl
     all_vars[name].id = int(name[-1])
 
 def buttons_off(game, buttons):
+    # function disables the ability to press the buttons
     for button in buttons:
             button.configure(state = 'disabled')
 
 def reset_board(buttons):
+    # function resets buttons to initial state
     for button in buttons:
         button.configure(text = 'Tic\nTac\nToe', state = 'disabled')
 
