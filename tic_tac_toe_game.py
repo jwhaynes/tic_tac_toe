@@ -2,6 +2,22 @@
 from tkinter import *
 from tkinter import ttk, messagebox
 from tic_tac_toe_classes import Player, Game
+from random import random
+
+# function for making computer plays
+def computer_play(game, buttons):
+    total_play_options = len(game.play_options)
+    play_index = round(random()*total_play_options-1)
+    button_id = game.play_options[play_index]
+
+    game.p2.plays.append(button_id) # add moves to list of player2 plays
+    game.play_options.remove(button_id) # removes button as a possible play option
+    game.next_player_turn = 1 # changes next_player prop of game object to player1
+
+    for button in buttons:
+        if button.id == button_id:
+            button.configure(text='\n{symbol}\n\n'.format(symbol=game.p2.symbol), state='disabled') # place player2 symbol
+
 
 # special board button class for tkinter
 class tictactoe_button(ttk.Button):
@@ -37,6 +53,17 @@ class tictactoe_button(ttk.Button):
         if (game.winner == None):
             # indicate it's the next player's turn
             turn_indication_label.configure(text='Player turn: Player {num}'.format(num=game.next_player_turn))
+            if (game.computer_player == TRUE):
+                computer_play(game,buttons)
+                game.check_for_win() # method defined in tic_tac_toe_classes.py
+                # flow control for tie or when a player wins
+                if (game.winner != None) and (game.winner == 'CAT'):
+                    buttons_off(game, buttons)
+                    messagebox.showinfo(message = 'CAT! It\'s a tie!') # window pops up to show tie
+                elif (game.winner != None):
+                    buttons_off(game, buttons)
+                    messagebox.showinfo(message = '{winner} has won the game!'.format(winner = game.winner)) # window pops up to show winner
+            
 
 # instantiate the gui
 root = Tk() 
@@ -81,6 +108,7 @@ def reset_all():
 def begin_board_game():
     # function to change application to start a game
     game = Game(player1_selection.get())
+    game.computer_player = computer_player_option.get()
     for button in buttons:
         button.initialize_button(game)
 
@@ -93,24 +121,29 @@ def begin_board_game():
 
 
 ## create radio buttons for selecting who is x and who is o and define associated selection variable variable
-player1_selection = StringVar() # define variable so radio button selection value can be accessed
+player1_selection = StringVar(value='X') # define variable so radio button selection value can be accessed
 player1X_player2O_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: X\nPlayer 2: O', variable=player1_selection, value='X')
 player1O_player2X_radio_button = ttk.Radiobutton(frm_player_options, text='Player 1: O\nPlayer 2: X', variable=player1_selection, value='O')
 
 player1X_player2O_radio_button.grid(column=1, row=1)
 player1O_player2X_radio_button.grid(column=1, row=2)
 
+## check button to determine whether computer is second player
+computer_player_option = BooleanVar(value=TRUE)
+check_button_computer_player = ttk.Checkbutton(frm_player_options, text='Computer\nPlayer', variable=computer_player_option, onvalue=TRUE, offvalue=FALSE)
+check_button_computer_player.grid(column=1, row=3, pady=5)
+
 ## create a start button to begin a game
 start_button = ttk.Button(frm_player_options, text='START', command=begin_board_game)
-start_button.grid(column=1,row=3,pady=5)
+start_button.grid(column=1,row=4,pady=5)
 
 ## create a reset button to reset board
 reset_button = ttk.Button(frm_player_options, text='RESET BOARD', state = 'disabled', command=reset_all)
-reset_button.grid(column=1, row=4, pady=5)
+reset_button.grid(column=1, row=5, pady=5)
 
 ## create a label that displays whose turn it is
 turn_indication_label = ttk.Label(frm_player_options, text='Player turn: ', width=18)
-turn_indication_label.grid(column=1,row=5,pady=5)
+turn_indication_label.grid(column=1,row=6,pady=5)
 
 # create a button widget that allows for exiting the gui
 #ttk.Button(frm, text='EXIT', command = root.destroy).grid(column = 1, row = 0)
