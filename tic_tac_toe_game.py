@@ -13,6 +13,7 @@ def computer_play(game, buttons):
     game.p2.plays.append(button_id) # add moves to list of player2 plays
     game.play_options.remove(button_id) # removes button as a possible play option
     game.next_player_turn = 1 # changes next_player prop of game object to player1
+    turn_indication_label.configure(text='Player turn: Player {num}'.format(num=game.next_player_turn)) # change label value
 
     for button in buttons:
         if button.id == button_id:
